@@ -1,4 +1,5 @@
 # coding: utf-8
+from ast import Num, Str
 import csv
 from pathlib import Path
 
@@ -118,8 +119,7 @@ def calculate_present_value(future_value, remaining_months, annual_discount_rate
 
 # @TODO: Use the function to calculate the present value of the new loan given below.
 #    Use an `annual_discount_rate` of 0.2 for this new loan calculation.
-annual_discount_rate = .2
-new_loan_present_value = calculate_present_value(new_loan["future_value"], new_loan["remaining_months"], annual_discount_rate)
+present_value = calculate_present_value(new_loan["future_value"], new_loan["remaining_months"], 0.2)
 
 print(f"The present value of the loan is: {present_value}")
 
@@ -163,13 +163,15 @@ loans = [
 ]
 
 # @TODO: Create an empty list called `inexpensive_loans`
-# YOUR CODE HERE!
+inexpensive_loans = []
 
 # @TODO: Loop through all the loans and append any that cost $500 or less to the `inexpensive_loans` list
-# YOUR CODE HERE!
+for loan in loans:
+    if loan["loan_price"] <= 500:
+        inexpensive_loans.append(loan)
 
 # @TODO: Print the `inexpensive_loans` list
-# YOUR CODE HERE!
+print(inexpensive_loans)
 
 
 """Part 5: Save the results.
@@ -194,4 +196,10 @@ output_path = Path("inexpensive_loans.csv")
 
 # @TODO: Use the csv library and `csv.writer` to write the header row
 # and each row of `loan.values()` from the `inexpensive_loans` list.
-# YOUR CODE HERE!
+with open(output_path, "w") as csvfile:
+    csvwriter = csv.writer(csvfile, delimiter=",")
+
+    csvwriter.writerow(header)
+
+    for loan in inexpensive_loans:
+        csvwriter.writerow(loan.values())
